@@ -1,6 +1,10 @@
 package com.backend.rentRead.service;
 
+import com.backend.rentRead.controller.exchanges.request.AuthRequest;
+import com.backend.rentRead.controller.exchanges.request.RegisterRequest;
+import com.backend.rentRead.controller.exchanges.response.AuthResponse;
 import com.backend.rentRead.model.User;
+import com.backend.rentRead.model.enums.Role;
 import com.backend.rentRead.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
