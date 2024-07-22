@@ -1,5 +1,6 @@
-package com.backend.rentRead.security;
+package com.backend.rentRead.config.security;
 
+import com.backend.rentRead.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
