@@ -24,7 +24,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
