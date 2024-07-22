@@ -1,19 +1,23 @@
 package com.backend.rentRead.model;
 
+import com.backend.rentRead.model.enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
+
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
 public class User implements UserDetails {
     @Id
@@ -24,26 +28,29 @@ public class User implements UserDetails {
     private String email;
 
     @Column(nullable = false)
-    private String username;
+    private String firstName;
+
+    @Column(nullable = false)
+    private String lastName;
 
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
-    private boolean enabled;
+//    @Column(nullable = false)
+//    private boolean enabled;
 
-    private Set<String> roles = new HashSet<>();
+    private Role role;
 
 
-    // Implement UserDetails methods
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Set<GrantedAuthority> authorities = new HashSet<>();
-        for (String role : roles) {
-            authorities.add(() -> "ROLE_" + role);
-        }
-        return authorities;
+        return List.of(new SimpleGrantedAuthority(role.name()));
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
     }
 
     @Override
@@ -63,6 +70,6 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return enabled;
+        return true;
     }
 }
