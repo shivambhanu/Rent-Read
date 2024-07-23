@@ -60,6 +60,18 @@ public class RentalService {
 
     //Return rented books using this service
     public void returnBook(Long rentalId){
+        Rental currRental = rentalRepository.findById(rentalId).orElseThrow(() -> new EntityNotFoundException("Rental object not found"));
 
+        if(currRental.getReturnDate() != null){
+            throw new IllegalStateException("This book has already been returned");
+        }
+        currRental.setReturnDate(LocalDate.now());
+
+
+        Book rentedBook = currRental.getBook();
+        rentedBook.setAvailabilityStatus(true);
+        bookRepository.save(rentedBook);
+
+        rentalRepository.save(currRental);
     }
 }
