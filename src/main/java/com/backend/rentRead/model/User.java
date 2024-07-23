@@ -17,6 +17,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
 public class User implements UserDetails {
     @Id
@@ -34,9 +35,6 @@ public class User implements UserDetails {
 
     @Column(nullable = false)
     private String password;
-
-//    @Column(nullable = false)
-//    private boolean enabled;
 
     private Role role;
 
