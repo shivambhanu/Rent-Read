@@ -22,7 +22,7 @@ public class RentReadApplication {
 
 
 	@GetMapping("/admins")
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasRole('ADMIN')")
 	public String welcomeAdmin() {
 		return "Hello from ADMIN's endpoint!";
 	}
