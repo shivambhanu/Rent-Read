@@ -7,10 +7,13 @@ import com.backend.rentRead.model.User;
 import com.backend.rentRead.model.enums.Role;
 import com.backend.rentRead.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 @Service
@@ -42,6 +45,11 @@ public class AuthService {
         return AuthResponse.builder().build();
     }
 
+
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<User> getAllUsers(){
+        return userRepository.findAll();
+    }
 
 
 

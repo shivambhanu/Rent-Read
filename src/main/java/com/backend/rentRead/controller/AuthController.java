@@ -3,12 +3,16 @@ package com.backend.rentRead.controller;
 import com.backend.rentRead.controller.exchanges.request.AuthRequest;
 import com.backend.rentRead.controller.exchanges.request.RegisterRequest;
 import com.backend.rentRead.controller.exchanges.response.AuthResponse;
+import com.backend.rentRead.model.User;
 import com.backend.rentRead.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+
+import java.util.List;
 
 @Controller
 public class AuthController {
@@ -20,6 +24,11 @@ public class AuthController {
         return ResponseEntity.ok(authService.register(request));
     }
 
+
+    @GetMapping("/users")
+    public ResponseEntity<List<User>> getAllUsers(){
+        return ResponseEntity.ok(authService.getAllUsers());
+    }
 
 
         //We don't usually need custom login endpoint for Basic Auth, but if you want to use it,
