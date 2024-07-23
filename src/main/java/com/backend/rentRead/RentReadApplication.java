@@ -7,23 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
-@RestController
 public class RentReadApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(RentReadApplication.class, args);
-	}
-
-
-	@GetMapping("/")
-	public String welcome() {
-		return "Hello from AUTHENTICATED endpoint!";
-	}
-
-
-	@GetMapping("/admins")
-	@PreAuthorize("hasRole('ADMIN')")
-	public String welcomeAdmin() {
-		return "Hello from ADMIN's endpoint!";
 	}
 }
