@@ -43,8 +43,13 @@ public class AuthService {
     }
 
 
-    public AuthResponse login(AuthRequest request){
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-        return AuthResponse.builder().build();
-    }
+
+
+    //We don't usually need custom login endpoint for Basic Auth, but if you want to use it,
+    // then remember that you need to put the credentials in header as well as json payload in the body to authorize
+
+//    public AuthResponse login(AuthRequest request){
+//        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+//        return AuthResponse.builder().build();
+//    }
 }

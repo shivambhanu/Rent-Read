@@ -1,6 +1,5 @@
 package com.backend.rentRead.controller;
 
-
 import com.backend.rentRead.controller.exchanges.request.AuthRequest;
 import com.backend.rentRead.controller.exchanges.request.RegisterRequest;
 import com.backend.rentRead.controller.exchanges.response.AuthResponse;
@@ -22,8 +21,12 @@ public class AuthController {
     }
 
 
-    @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request){
-        return ResponseEntity.ok(authService.login(request));
-    }
+
+        //We don't usually need custom login endpoint for Basic Auth, but if you want to use it,
+        // then remember that you need to put the credentials in header as well as json payload in the body to authorize
+
+//    @PostMapping("/login")
+//    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request){
+//        return ResponseEntity.ok(authService.login(request));
+//    }
 }

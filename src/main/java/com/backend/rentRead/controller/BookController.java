@@ -25,6 +25,7 @@ public class BookController {
         return new ResponseEntity<>(bookService.getBookById(bookId), HttpStatus.OK);
     }
 
+
     @PutMapping("/books/{bookId}")
     public ResponseEntity<Book> updateBook(@PathVariable Long bookId, @RequestBody Book book){
         return new ResponseEntity<>(bookService.updateBookDetails(bookId, book), HttpStatus.OK);
