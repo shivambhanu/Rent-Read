@@ -31,7 +31,7 @@ public class RentalControllerTest {
     @WithMockUser(username = "testUser@email.com", roles = "USER")
     public void testRentBook() throws Exception{
         Long bookId = 1L, userId = 1L, rentalId = 1L;
-        Book book = new Book(bookId, "The Compound Effect", "Darren Hardy", "Self-Help", true);
+        Book book = new Book(bookId, "The Compound Effect", "Darren Hardy", "Self-Help", false);
         User user = new User(userId, "testUser@email.com", "test", "user", "testPassword", Role.USER);
 
         Rental rentalObj = new Rental(rentalId, user, book, LocalDate.now(), null);
@@ -40,14 +40,31 @@ public class RentalControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.post("/books/{bookId}/rent", bookId))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.rentalId").value(rentalId))
-//                .andExpect(MockMvcResultMatchers.jsonPath("$.user.userId").value(userId))
-//                .andExpect(MockMvcResultMatchers.jsonPath("$.book.bookId").value(bookId))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.user.userId").value(userId))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.book.bookId").value(bookId))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.book.availabilityStatus").value(book.isAvailabilityStatus()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.rentalDate").value(String.valueOf(LocalDate.now())));
     }
 
 
-//    @Test
-//    public void testReturnBook() {
-//
-//    }
+    @Test
+    @WithMockUser(username = "testUser@email.com", roles = "USER")
+    public void testReturnBook() throws Exception{
+        Long bookId = 1L, userId = 1L, rentalId = 1L;
+        Book book = new Book(bookId, "The Compound Effect", "Darren Hardy", "Self-Help", true);
+        User user = new User(userId, "testUser@email.com", "test", "user", "testPassword", Role.USER);
+
+        Rental rentalObj = new Rental(rentalId, user, book, LocalDate.now(), LocalDate.now().plusDays(1));
+        when(rentalService.returnBook(bookId)).thenReturn(rentalObj);
+
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/books/{bookId}/return", bookId))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.rentalId").value(rentalId))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.user.userId").value(userId))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.book.bookId").value(bookId))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.book.availabilityStatus").value(book.isAvailabilityStatus()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.rentalDate").value(String.valueOf(LocalDate.now())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.returnDate").value(String.valueOf(LocalDate.now().plusDays(1))));
+    }
 }
