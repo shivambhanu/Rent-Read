@@ -43,7 +43,7 @@ public class RentalService {
         //check whether the user has already rented 2 books
         long totalRentals = rentalRepository.countByUserAndReturnDateIsNull(currUser);
         if(totalRentals >= 2){
-            throw new IllegalStateException("You cannot rent more than 2 books acitvely");
+            throw new IllegalStateException("You cannot rent more than 2 books actively");
         }
 
 
