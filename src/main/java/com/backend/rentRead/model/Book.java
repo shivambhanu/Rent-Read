@@ -26,13 +26,5 @@ public class Book {
     private String genre;
 
     @Column(nullable = false)
-    private boolean isAvailable;
-
-
-    public boolean getAvailabilityStatus(){
-        return isAvailable;
-    }
-    public void setAvailabilityStatus(boolean status){
-        isAvailable = status;
-    }
+    private boolean availabilityStatus;
 }

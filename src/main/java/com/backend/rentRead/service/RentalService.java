@@ -8,10 +8,11 @@ import com.backend.rentRead.repository.RentalRepository;
 import com.backend.rentRead.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
-import java.util.List;
+
 
 @Service
 public class RentalService {
@@ -26,13 +27,16 @@ public class RentalService {
     private BookRepository bookRepository;
 
 
-    public Rental rentBook(Long userId, Long bookId){
+    public Rental rentBook(Long bookId){
+        //Fetching user from security context.
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User userDetails = (User) authentication.getPrincipal();
 
+        Long userId = userDetails.getId();
         User currUser = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found with given id"));
 
         Book currBook = bookRepository.findById(bookId).orElseThrow(() -> new EntityNotFoundException("Book not found with the given id"));
-
-        if(!currBook.getAvailabilityStatus()){
+        if(!currBook.isAvailabilityStatus()){
             throw new IllegalStateException("Book is not available for rent");
         }
 
@@ -57,21 +61,25 @@ public class RentalService {
     }
 
 
-
     //Return rented books using this service
-    public void returnBook(Long rentalId){
-        Rental currRental = rentalRepository.findById(rentalId).orElseThrow(() -> new EntityNotFoundException("Rental object not found"));
+    public Rental returnBook(Long bookId){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User userDetails = (User) authentication.getPrincipal();
+        Long userId = userDetails.getId();
 
+        User currUser = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found with given id"));
+        Book currBook = bookRepository.findById(bookId).orElseThrow(() -> new EntityNotFoundException("Book not found with the given id"));
+
+        Rental currRental = rentalRepository.findByUserAndBookAndReturnDateIsNull(currUser, currBook);
         if(currRental.getReturnDate() != null){
             throw new IllegalStateException("This book has already been returned");
         }
         currRental.setReturnDate(LocalDate.now());
 
 
-        Book rentedBook = currRental.getBook();
-        rentedBook.setAvailabilityStatus(true);
-        bookRepository.save(rentedBook);
+        currBook.setAvailabilityStatus(true);
+        bookRepository.save(currBook);
 
-        rentalRepository.save(currRental);
+        return rentalRepository.save(currRental);
     }
 }

@@ -32,7 +32,7 @@ public class BookService {
         currBook.setTitle(newBook.getTitle());
         currBook.setAuthor(newBook.getAuthor());
         currBook.setGenre(newBook.getGenre());
-        currBook.setAvailable(newBook.isAvailable());
+        currBook.setAvailabilityStatus(newBook.isAvailabilityStatus());
 
         return bookRepository.save(currBook);
     }
