@@ -76,7 +76,6 @@ public class RentalService {
         }
         currRental.setReturnDate(LocalDate.now());
 
-
         currBook.setAvailabilityStatus(true);
         bookRepository.save(currBook);
 

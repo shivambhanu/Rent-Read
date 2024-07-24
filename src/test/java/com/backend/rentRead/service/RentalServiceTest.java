@@ -81,4 +81,38 @@ public class RentalServiceTest {
         verify(rentalRepositoryMock, times(1)).countByUserAndReturnDateIsNull(any(User.class));
         verify(rentalRepositoryMock, times(1)).save(any(Rental.class));
     }
+
+
+    @Test
+    public void testReturnBook(){
+        //Arrange
+        Long bookId = 1L, userId = 1L, rentalId = 1L;
+        Book testBook = new Book(bookId, "The Compound Effect", "Darren Hardy", "Self-Help", false);
+        User testUser = new User(userId, "testUser@email.com", "test", "user", "testPassword", Role.USER);
+        Rental rentalObj = new Rental(rentalId, testUser, testBook, LocalDate.now(), null);
+
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        when(authentication.getPrincipal()).thenReturn(testUser);
+        SecurityContextHolder.setContext((securityContext));
+
+        when(userRepositoryMock.findById(anyLong())).thenReturn(Optional.of(testUser));
+        when(bookRepositoryMock.findById(anyLong())).thenReturn(Optional.of(testBook));
+        when(rentalRepositoryMock.findByUserAndBookAndReturnDateIsNull(any(User.class), any(Book.class))).thenReturn(rentalObj);
+
+        Rental exptectedRental = new Rental(rentalId, testUser, testBook, LocalDate.now(), LocalDate.now());
+        when(rentalRepositoryMock.save(any(Rental.class))).thenReturn(exptectedRental);
+
+        //Act
+        Rental actualRental = rentalService.returnBook(bookId);
+
+        //Assert
+        assertNotNull(actualRental);
+        assertEquals(testBook, actualRental.getBook());
+        assertEquals(testUser, actualRental.getUser());
+        assertEquals(LocalDate.now(), actualRental.getReturnDate());
+
+        verify(bookRepositoryMock, times(1)).save(testBook);
+        verify(rentalRepositoryMock, times(1)).findByUserAndBookAndReturnDateIsNull(any(User.class), any(Book.class));
+        verify(rentalRepositoryMock, times(1)).save(any(Rental.class));
+    }
 }
