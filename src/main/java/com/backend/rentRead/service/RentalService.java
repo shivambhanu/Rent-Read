@@ -32,7 +32,7 @@ public class RentalService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User userDetails = (User) authentication.getPrincipal();
 
-        Long userId = userDetails.getId();
+        Long userId = userDetails.getUserId();
         User currUser = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found with given id"));
 
         Book currBook = bookRepository.findById(bookId).orElseThrow(() -> new EntityNotFoundException("Book not found with the given id"));
@@ -65,7 +65,7 @@ public class RentalService {
     public Rental returnBook(Long bookId){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User userDetails = (User) authentication.getPrincipal();
-        Long userId = userDetails.getId();
+        Long userId = userDetails.getUserId();
 
         User currUser = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found with given id"));
         Book currBook = bookRepository.findById(bookId).orElseThrow(() -> new EntityNotFoundException("Book not found with the given id"));
