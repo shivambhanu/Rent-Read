@@ -1,4 +1,4 @@
-# My Spring Boot Application
+# Rent Read Application
 
 ## API Documentation
 
