@@ -41,8 +41,6 @@ Develop a RESTful API service to manage an online book rental system with the fo
 ### Private Endpoints (Requires Authentication)
 - **GET /books:** Get all books (accessible by any authenticated user).
 - **POST /books:** Create a new book (ADMIN only).
-- **PUT /books/{bookId}:** Update a book (ADMIN only).  -(not supporting right now)
-- **DELETE /books/{bookId}:** Delete a book (ADMIN only).  -(not supporting right now)
 - **POST /books/{bookId}/rent:** Rent a book (USER).
 - **POST /books/{bookId}/return:** Return a book (USER).
 
