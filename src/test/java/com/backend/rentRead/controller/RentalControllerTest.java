@@ -25,7 +25,7 @@ public class RentalControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private RentalService rentalService;
+    private RentalService rentalServiceMock;
 
     @Test
     @WithMockUser(username = "testUser@email.com", roles = "USER")
@@ -35,7 +35,7 @@ public class RentalControllerTest {
         User user = new User(userId, "testUser@email.com", "test", "user", "testPassword", Role.USER);
 
         Rental rentalObj = new Rental(rentalId, user, book, LocalDate.now(), null);
-        when(rentalService.rentBook(bookId)).thenReturn(rentalObj);
+        when(rentalServiceMock.rentBook(bookId)).thenReturn(rentalObj);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/books/{bookId}/rent", bookId))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -55,7 +55,7 @@ public class RentalControllerTest {
         User user = new User(userId, "testUser@email.com", "test", "user", "testPassword", Role.USER);
 
         Rental rentalObj = new Rental(rentalId, user, book, LocalDate.now(), LocalDate.now().plusDays(1));
-        when(rentalService.returnBook(bookId)).thenReturn(rentalObj);
+        when(rentalServiceMock.returnBook(bookId)).thenReturn(rentalObj);
 
 
         mockMvc.perform(MockMvcRequestBuilders.post("/books/{bookId}/return", bookId))
